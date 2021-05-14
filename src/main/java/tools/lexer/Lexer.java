@@ -4,15 +4,11 @@ import java.util.Optional;
 
 @FunctionalInterface
 public interface Lexer {
-    static Builder builder() {
-        return new Builder();
+    static Lexer create() {
+        return text -> Optional.empty();
     }
 
     Optional<?> tryParse(String text);
 
-    class Builder {
-        public Lexer build() {
-            return text -> Optional.empty();
-        }
-    }
+
 }

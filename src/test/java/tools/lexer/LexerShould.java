@@ -10,7 +10,7 @@ public class LexerShould {
 
     @Test
     void have_an_empty_parsing_result_when_there_is_no_rule_defined() {
-        final var lexer = Lexer.builder().build();
+        final var lexer = Lexer.create();
 
         final var result = lexer.tryParse(ANY_STRING);
 
