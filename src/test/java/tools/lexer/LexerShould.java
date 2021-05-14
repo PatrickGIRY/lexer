@@ -16,4 +16,10 @@ public class LexerShould {
 
         assertThat(result).isEmpty();
     }
+
+    @Test @SuppressWarnings("unused")
+    void be_typed() {
+        final Lexer<String> stringLexer = Lexer.create();
+        final Lexer<Integer> integerLexer = Lexer.create();
+    }
 }
