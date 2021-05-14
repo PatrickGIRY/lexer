@@ -8,7 +8,8 @@ public interface Lexer<T> {
         return text -> Optional.empty();
     }
 
-    Optional<?> tryParse(String text);
+    Optional<Result<T>> tryParse(String text);
 
-
+    record Result<T>() {
+    }
 }

@@ -2,6 +2,8 @@ package tools.lexer;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LexerShould {
@@ -21,5 +23,11 @@ public class LexerShould {
     void be_typed() {
         final Lexer<String> stringLexer = Lexer.create();
         final Lexer<Integer> integerLexer = Lexer.create();
+    }
+
+    @Test @SuppressWarnings("unused")
+    void have_typed_result() {
+        Optional<Lexer.Result<String>> stringResult = Lexer.<String>create().tryParse("foo");
+        Optional<Lexer.Result<Integer>> integerResult = Lexer.<Integer>create().tryParse("123");
     }
 }
