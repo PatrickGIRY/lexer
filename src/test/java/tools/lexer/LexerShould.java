@@ -1,6 +1,8 @@
 package tools.lexer;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Optional;
 
@@ -32,11 +34,11 @@ public class LexerShould {
         Optional<Lexer.Result<Integer>> integerResult = Lexer.<Integer>create().tryParse("123");
     }
 
-    @Test
-    void return_result_when_there_a_rule_with_a_one_group_regex_that_match_the_parsed_text() {
+    @ParameterizedTest
+    @ValueSource(strings = {"123"})
+    void return_result_when_there_a_rule_with_a_one_group_regex_that_match_the_parsed_text(String text) {
         var lexer = Lexer.create(Lexer.rule("([0-0]+)"));
 
-        final var text = "123";
         var result = lexer.tryParse(text);
 
         assertAll(
