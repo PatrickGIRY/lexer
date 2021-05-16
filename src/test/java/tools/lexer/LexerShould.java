@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerShould {
 
@@ -29,5 +30,20 @@ public class LexerShould {
     void have_typed_result() {
         Optional<Lexer.Result<String>> stringResult = Lexer.<String>create().tryParse("foo");
         Optional<Lexer.Result<Integer>> integerResult = Lexer.<Integer>create().tryParse("123");
+    }
+
+    @Test
+    void return_result_when_there_a_rule_with_a_one_group_regex_that_match_the_parsed_text() {
+        var lexer = Lexer.create(Lexer.rule("([0-0]+)"));
+
+        final var text = "123";
+        var result = lexer.tryParse(text);
+
+        assertAll(
+                () -> assertThat(result).isNotEmpty(),
+                () -> assertThat(result.map(Lexer.Result::value)).hasValue(text),
+                () -> assertThat(result.map(Lexer.Result::startIndex)).hasValue(0),
+                () -> assertThat(result.map(Lexer.Result::endIndex)).hasValue(3)
+        );
     }
 }
