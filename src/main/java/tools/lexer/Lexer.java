@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface Lexer<T> {
     @SuppressWarnings("unchecked")
     static <T> Lexer<T> create(Rule... rules) {
-        return text -> "123".equals(text)
+        return text -> rules.length > 0
                 ? Optional.of(new Result<>((T) text, 0, text.length()))
                 : Optional.empty();
     }

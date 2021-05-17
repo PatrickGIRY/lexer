@@ -35,7 +35,7 @@ public class LexerShould {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"123"})
+    @ValueSource(strings = {"123", "1468"})
     void return_result_when_there_a_rule_with_a_one_group_regex_that_match_the_parsed_text(String text) {
         var lexer = Lexer.create(Lexer.rule("([0-0]+)"));
 
@@ -45,7 +45,7 @@ public class LexerShould {
                 () -> assertThat(result).isNotEmpty(),
                 () -> assertThat(result.map(Lexer.Result::value)).hasValue(text),
                 () -> assertThat(result.map(Lexer.Result::startIndex)).hasValue(0),
-                () -> assertThat(result.map(Lexer.Result::endIndex)).hasValue(3)
+                () -> assertThat(result.map(Lexer.Result::endIndex)).hasValue(text.length())
         );
     }
 }
