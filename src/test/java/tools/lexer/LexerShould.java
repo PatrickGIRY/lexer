@@ -22,13 +22,15 @@ public class LexerShould {
         assertThat(result).isEmpty();
     }
 
-    @Test @SuppressWarnings("unused")
+    @Test
+    @SuppressWarnings("unused")
     void be_typed() {
         final Lexer<String> stringLexer = Lexer.create();
         final Lexer<Integer> integerLexer = Lexer.create();
     }
 
-    @Test @SuppressWarnings("unused")
+    @Test
+    @SuppressWarnings("unused")
     void have_typed_result() {
         Optional<Lexer.Result<String>> stringResult = Lexer.<String>create().tryParse("foo");
         Optional<Lexer.Result<Integer>> integerResult = Lexer.<Integer>create().tryParse("123");
@@ -36,7 +38,7 @@ public class LexerShould {
 
     @ParameterizedTest
     @ValueSource(strings = {"123", "1468"})
-    void return_result_when_there_a_rule_with_a_one_group_regex_that_match_the_parsed_text(String text) {
+    void return_result_when_there_a_rule_with_a_one_group_regex_that_matches_the_parsed_text(String text) {
         var lexer = Lexer.create(Lexer.rule("([0-0]+)"));
 
         var result = lexer.tryParse(text);
