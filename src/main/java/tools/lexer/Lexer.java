@@ -16,7 +16,7 @@ public interface Lexer<T> {
     }
 
     static Rule rule(String regex) {
-        return null;
+        return new Rule(oneGroupPattern(regex));
     }
 
     static OneGroupPattern oneGroupPattern(String regex) {
@@ -28,8 +28,10 @@ public interface Lexer<T> {
     record Result<T>(T value, int startIndex, int endIndex) {
     }
 
-    class Rule {
-
+    record Rule(OneGroupPattern oneGroupPattern) {
+        public Rule {
+            requireNonNull(oneGroupPattern);
+        }
     }
 
     record OneGroupPattern(Pattern pattern) {
