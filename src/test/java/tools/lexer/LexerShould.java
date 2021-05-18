@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerShould {
@@ -39,7 +40,7 @@ public class LexerShould {
     @ParameterizedTest
     @ValueSource(strings = {"123", "1468"})
     void return_result_when_there_a_rule_with_a_one_group_regex_that_matches_the_parsed_text(String text) {
-        var lexer = Lexer.create(Lexer.rule("([0-0]+)"));
+        var lexer = Lexer.create(Lexer.rule("([0-9]+)"));
 
         var result = lexer.tryParse(text);
 
@@ -50,4 +51,14 @@ public class LexerShould {
                 () -> assertThat(result.map(Lexer.Result::endIndex)).hasValue(text.length())
         );
     }
+
+    @Test
+    void return_empty_when_there_is_no_rule_with_a_one_group_regex_that_amtches_the_parsed_text() {
+        var lexer = Lexer.create(Lexer.rule("([0-9]+)"));
+
+        var result = lexer.tryParse("foo");
+
+        assertThat(result).isEmpty();
+    }
+
 }

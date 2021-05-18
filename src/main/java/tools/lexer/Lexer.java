@@ -1,18 +1,33 @@
 package tools.lexer;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.*;
 
 @FunctionalInterface
 public interface Lexer<T> {
+
     @SuppressWarnings("unchecked")
     static <T> Lexer<T> create(Rule... rules) {
-        return text -> rules.length > 0
-                ? Optional.of(new Result<>((T) text, 0, text.length()))
+        final var patternOfRules = patternOfRules(rules);
+        return text -> patternOfRules.matcher(text).matches()
+                ? Optional.of(new Result<>((T)text, 0, text.length()))
                 : Optional.empty();
+    }
+
+    private static Pattern patternOfRules(Rule[] rules) {
+        return Stream.of(rules)
+                .map(Rule::oneGroupPattern)
+                .map(OneGroupPattern::pattern)
+                .map(Pattern::pattern)
+                .collect(collectingAndThen(joining("|"), Pattern::compile));
     }
 
     static Rule rule(String regex) {
