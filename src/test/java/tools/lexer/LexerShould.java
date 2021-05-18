@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class LexerShould {
 
     private static final String ANY_STRING = "Any string";
+    private static final Lexer.Rule[] NULL_ARRAY_OF_RULES = null;
 
     @Test
     void have_an_empty_parsing_result_when_there_is_no_rule_defined() {
@@ -59,6 +60,11 @@ public class LexerShould {
         var result = lexer.tryParse("foo");
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void not_created_with_null_array_of_rules() {
+        assertThatThrownBy(() -> Lexer.create(NULL_ARRAY_OF_RULES)).isInstanceOf(NullPointerException.class);
     }
 
 }

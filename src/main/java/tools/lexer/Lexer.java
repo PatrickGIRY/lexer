@@ -16,6 +16,7 @@ public interface Lexer<T> {
 
     @SuppressWarnings("unchecked")
     static <T> Lexer<T> create(Rule... rules) {
+        requireNonNull(rules);
         final var patternOfRules = patternOfRules(rules);
         return text -> patternOfRules.matcher(text).matches()
                 ? Optional.of(new Result<>((T)text, 0, text.length()))
