@@ -43,6 +43,10 @@ public interface Lexer<T> {
         return __ -> Optional.empty();
     }
 
+    static <T> Lexer<T> of(T value, int valueSize) {
+        return __ -> Optional.of(new Result<>(value, 0, valueSize));
+    }
+
     Optional<Result<T>> tryParse(String text);
 
     record Result<T>(T value, int startIndex, int endIndex) {

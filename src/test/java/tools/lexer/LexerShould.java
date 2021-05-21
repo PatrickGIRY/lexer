@@ -2,9 +2,12 @@ package tools.lexer;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -74,5 +77,28 @@ public class LexerShould {
         var result = lexer.tryParse(ANY_STRING);
 
         assertThat(result).isEmpty();
+    }
+
+    @ParameterizedTest
+    @MethodSource("valueProvider")
+    void be_created_with_a_result_whose_value_is_the_supplied_text(Object value, int valueSize) {
+        var lexer = Lexer.of(value, valueSize);
+
+        var result = lexer.tryParse(ANY_STRING);
+
+        assertAll(
+                () -> assertThat(result).isNotEmpty(),
+                () -> assertThat(result.map(Lexer.Result::value)).hasValue(value),
+                () -> assertThat(result.map(Lexer.Result::startIndex)).hasValue(0),
+                () -> assertThat(result.map(Lexer.Result::endIndex)).hasValue(valueSize)
+        );
+    }
+
+    static Stream<Arguments> valueProvider() {
+        return Stream.of(
+                Arguments.of("foo", 3),
+                Arguments.of("lang", 4),
+                Arguments.of(12345, 5)
+        );
     }
 }
