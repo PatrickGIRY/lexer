@@ -1,6 +1,7 @@
 package tools.lexer;
 
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -16,7 +17,7 @@ public interface Lexer<T> {
         requireNonNull(rules);
         final var patternOfRules = patternOfRules(rules);
         return text -> patternOfRules.matcher(text).matches()
-                ? Optional.of(new Result<>((T)text, 0, text.length()))
+                ? Optional.of(new Result<>((T) text, 0, text.length()))
                 : Optional.empty();
     }
 
@@ -47,6 +48,10 @@ public interface Lexer<T> {
     Optional<Result<T>> tryParse(String text);
 
     record Result<T>(T value, int startIndex, int endIndex) {
+        public <R> Result<R> map(Function<? super T, ? extends R> mapper) {
+            requireNonNull(mapper);
+            return new Result<>(mapper.apply(value()), startIndex(), endIndex());
+        }
     }
 
     record Rule(OneGroupPattern oneGroupPattern) {
