@@ -67,4 +67,12 @@ public class LexerShould {
         assertThatThrownBy(() -> Lexer.create(NULL_ARRAY_OF_RULES)).isInstanceOf(NullPointerException.class);
     }
 
+    @Test
+    void be_createb_with_an_empty_result() {
+        var lexer = Lexer.<String>empty();
+
+        var result = lexer.tryParse(ANY_STRING);
+
+        assertThat(result).isEmpty();
+    }
 }

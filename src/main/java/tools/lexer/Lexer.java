@@ -39,6 +39,10 @@ public interface Lexer<T> {
         return new OneGroupPattern(Pattern.compile(regex));
     }
 
+    static <T> Lexer<T> empty() {
+        return __ -> Optional.empty();
+    }
+
     Optional<Result<T>> tryParse(String text);
 
     record Result<T>(T value, int startIndex, int endIndex) {
