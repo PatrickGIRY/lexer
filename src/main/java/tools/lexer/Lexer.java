@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.joining;
 public interface Lexer<T> {
 
     @SuppressWarnings("unchecked")
-    static <T> Lexer<T> create(Rule... rules) {
+    static <T> Lexer<T> create(Rule<? extends T>... rules) {
         requireNonNull(rules);
         final var patternOfRules = patternOfRules(rules);
         return text -> patternOfRules.matcher(text).matches()
@@ -21,7 +21,7 @@ public interface Lexer<T> {
                 : Optional.empty();
     }
 
-    private static Pattern patternOfRules(Rule[] rules) {
+    private static <T> Pattern patternOfRules(Rule<? extends T>[] rules) {
         return Stream.of(rules)
                 .map(Rule::oneGroupPattern)
                 .map(OneGroupPattern::pattern)
@@ -29,8 +29,17 @@ public interface Lexer<T> {
                 .collect(collectingAndThen(joining("|"), Pattern::compile));
     }
 
-    static Rule rule(String regex) {
-        return new Rule(oneGroupPattern(regex));
+    static <R> Rule<R> rule(String regex) {
+        return Lexer.rule(regex, Lexer::of);
+    }
+
+    private static <R> Lexer<R> of(Result<String> r) {
+        @SuppressWarnings("unchecked") final Function<String, R> mapper = v -> (R) v;
+        return __ -> Optional.of(r.map(mapper));
+    }
+
+    static <R> Rule<R> rule(String regex, Function<Result<String>, Lexer<R>> mapper) {
+        return new Rule<>(oneGroupPattern(regex), mapper);
     }
 
     static OneGroupPattern oneGroupPattern(String regex) {
@@ -54,7 +63,7 @@ public interface Lexer<T> {
         }
     }
 
-    record Rule(OneGroupPattern oneGroupPattern) {
+    record Rule<T>(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> mapper) {
         public Rule {
             requireNonNull(oneGroupPattern);
         }

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class LexerShould {
 
     private static final String ANY_STRING = "Any string";
-    private static final Lexer.Rule[] NULL_ARRAY_OF_RULES = null;
+    private static final Lexer.Rule<?>[] NULL_ARRAY_OF_RULES = null;
 
     @Test
     void have_an_empty_parsing_result_when_there_is_no_rule_defined() {
