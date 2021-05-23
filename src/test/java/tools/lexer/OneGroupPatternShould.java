@@ -23,7 +23,7 @@ public class OneGroupPatternShould {
     }
 
     @Test
-    void be_created_with_ony_non_null_pattern() {
+    void be_created_only_with_non_null_pattern() {
 
         assertThatThrownBy(() -> new OneGroupPattern(NULL_PATTERN))
         .isInstanceOf(NullPointerException.class);
