@@ -14,7 +14,7 @@ public class RulesBuilderShould {
 
     @Test
     void add_a_new_rule() {
-        final var rulesBuilder = new RulesBuilder();
+        final var rulesBuilder = new RulesBuilder<>();
         final var rule = new Rule<>(ONE_GROUP_PATTERN, __ -> Lexer.empty());
 
         final var newRulesBuilder = rulesBuilder.add(rule);
@@ -23,5 +23,11 @@ public class RulesBuilderShould {
                 () -> assertThat(newRulesBuilder).isNotNull(),
                 () -> assertThat(newRulesBuilder.rules()).contains(rule)
         );
+    }
+
+    @Test @SuppressWarnings("unused")
+    void be_typed() {
+        final RulesBuilder<String> stringRulesBuilder = new RulesBuilder<>();
+        final RulesBuilder<Integer> integerRulesBuilder = new RulesBuilder<>();
     }
 }
