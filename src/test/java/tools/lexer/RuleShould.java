@@ -20,7 +20,7 @@ public class RuleShould {
     }
 
     @Test
-    void be_created_by_a_non_null_flet_mapper() {
+    void be_created_by_a_non_null_flat_mapper() {
         assertThatThrownBy(() -> new Rule(ONE_GROUP_PATTERN, NULL_FLAT_MAPPER))
                 .isInstanceOf(NullPointerException.class);
     }
