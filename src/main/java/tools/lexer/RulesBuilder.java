@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RulesBuilder {
-    private List<Rule> rules;
+    private final List<Rule> rules;
 
     public RulesBuilder() {
         rules = new ArrayList<>();
