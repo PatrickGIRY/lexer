@@ -24,4 +24,10 @@ public class RuleShould {
         assertThatThrownBy(() -> new Rule(ONE_GROUP_PATTERN, NULL_FLAT_MAPPER))
                 .isInstanceOf(NullPointerException.class);
     }
+
+    @Test @SuppressWarnings("unused")
+    void be_typed() {
+        Rule<String> stringRule = new Rule<>(ONE_GROUP_PATTERN, __ -> Lexer.empty());
+        Rule<Integer> integerRule = new Rule<>(ONE_GROUP_PATTERN, __ -> Lexer.empty());
+    }
 }

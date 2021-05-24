@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 
-public record Rule(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<?>> flatMapper) {
+public record Rule<T>(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
     public Rule {
         requireNonNull(oneGroupPattern);
         requireNonNull(flatMapper);
