@@ -2,10 +2,10 @@ package tools.lexer;
 
 import java.util.Optional;
 
-public interface Lexer {
-    static Lexer empty() {
+public interface Lexer<T> {
+    static <T> Lexer<T> empty() {
         return __ -> Optional.empty();
     }
 
-    Optional<?> tryParse(String text);
+    Optional<T> tryParse(String text);
 }
