@@ -7,5 +7,5 @@ public interface Lexer<T> {
         return __ -> Optional.empty();
     }
 
-    Optional<T> tryParse(String text);
+    Optional<?> tryParse(String text);
 }
