@@ -1,6 +1,5 @@
 package tools.lexer;
 
-import org.assertj.core.data.Index;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
