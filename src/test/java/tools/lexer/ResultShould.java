@@ -29,4 +29,11 @@ class ResultShould {
         assertThatThrownBy(() -> new Result<>(NULL_VALUE, START_INDEX, END_INDEX))
                 .isInstanceOf(NullPointerException.class);
     }
+
+    @Test
+    void be_created_with_a_posititve_or_zero_start_index() {
+        assertThatThrownBy(() -> new Result<>(VALUE, -1, END_INDEX))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Start index -1 must be positive or zero");
+    }
 }
