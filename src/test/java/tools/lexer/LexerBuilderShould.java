@@ -15,7 +15,7 @@ public class LexerBuilderShould {
     private static final Function<Result<String>, Lexer<Object>> FLAT_MAPPER = __ -> Lexer.empty();
 
     @Test
-    void add_a_new_rule() {
+    void add_one_new_rule() {
         final var lexerBuilder = new LexerBuilder<>();
 
         final var newLexerBuilder = lexerBuilder.add(ONE_GROUP_PATTERN, FLAT_MAPPER);
