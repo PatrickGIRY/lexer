@@ -9,9 +9,10 @@ public class LexerBuilder<T> {
     private String regexes = "";
     private final List<Function<Result<String>, Lexer<T>>> flatMappers = new ArrayList<>();
 
-    public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> fletMapper) {
-        regexes = oneGroupPattern.regex();
-        this.flatMappers.add(fletMapper);
+    public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
+        final var regex = oneGroupPattern.regex();
+        regexes = regexes.isEmpty() ? regex : regexes + " | " + regex;
+        this.flatMappers.add(flatMapper);
         return this;
     }
 
