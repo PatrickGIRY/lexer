@@ -13,10 +13,12 @@ public class LexerBuilder<T> {
 
     public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
         requireNonNull(oneGroupPattern);
+        requireNonNull(flatMapper);
 
         final var regex = oneGroupPattern.regex();
         regexes = regexes.isEmpty() ? regex : regexes + " | " + regex;
         this.flatMappers.add(flatMapper);
+
         return this;
     }
 
