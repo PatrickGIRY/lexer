@@ -1,6 +1,5 @@
 package tools.lexer;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
