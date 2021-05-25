@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerShould {
     @Test
@@ -31,7 +30,7 @@ public class LexerShould {
 
     @Test
     void creaee_a_lexer_with_the_given_result() {
-        final var givenResult = new Result<>();
+        final var givenResult = new Result<>("foo", 2, 10);
         final var lexer = Lexer.of(givenResult);
 
         final var result = lexer.tryParse("foo");
