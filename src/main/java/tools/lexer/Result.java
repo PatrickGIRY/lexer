@@ -25,6 +25,7 @@ public record Result<T>(T value, int startIndex, int endIndex) {
     }
 
     public <R> Result<R> map(Function<? super T, ? extends R> mapper) {
+        requireNonNull(mapper);
         return new Result<>(mapper.apply(value()), startIndex(), endIndex());
     }
 }

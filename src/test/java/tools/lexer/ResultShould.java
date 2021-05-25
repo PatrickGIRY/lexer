@@ -14,6 +14,7 @@ class ResultShould {
     private static final int START_INDEX = 4;
     private static final int END_INDEX = 7;
     private static final Object NULL_VALUE = null;
+    private static final Function<Object, Object> NULL_MAPPER = null;
 
     @Test
     void be_created_with_a_value_the_start_index_and_the_end_index_that_matches() {
@@ -57,5 +58,12 @@ class ResultShould {
                 () -> assertThat(result.startIndex()).isEqualTo(START_INDEX),
                 () -> assertThat(result.endIndex()).isEqualTo(END_INDEX)
         );
+    }
+
+    @Test
+    void not_map_with_a_null_mapper() {
+        final var result = new Result<>(123, START_INDEX, END_INDEX);
+
+        assertThatThrownBy(() -> result.map(NULL_MAPPER)).isInstanceOf(NullPointerException.class);
     }
 }
