@@ -2,6 +2,8 @@ package tools.lexer;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Function;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,5 +44,18 @@ class ResultShould {
         assertThatThrownBy(() -> new Result<>(VALUE, START_INDEX, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("End index 0 must be greater or equal than start index " + START_INDEX);
+    }
+
+    @Test
+    void map_the_result_value() {
+        final var integerResult = new Result<>(123, START_INDEX, END_INDEX);
+
+        final var result = integerResult.map((Function<Object, String>) Object::toString);
+
+        assertAll(
+                () -> assertThat(result.value()).isEqualTo("123"),
+                () -> assertThat(result.startIndex()).isEqualTo(START_INDEX),
+                () -> assertThat(result.endIndex()).isEqualTo(END_INDEX)
+        );
     }
 }
