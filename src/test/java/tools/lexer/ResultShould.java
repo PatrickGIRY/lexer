@@ -36,4 +36,11 @@ class ResultShould {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Start index -1 must be positive or zero");
     }
+
+    @Test
+    void be_created_with_an_end_index_is_greater_or_equal_to_start_index() {
+        assertThatThrownBy(() -> new Result<>(VALUE, START_INDEX, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("End index 0 must be greater or equal than start index " + START_INDEX);
+    }
 }

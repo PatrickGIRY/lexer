@@ -8,6 +8,14 @@ public record Result<T>(T value, int startIndex, int endIndex) {
     public Result {
         requireNonNull(value);
         requirePositiveOrZero(startIndex);
+        requireGreaterOrEqual(endIndex, startIndex);
+    }
+
+    private void requireGreaterOrEqual(int endIndex, int startIndex) {
+        if (endIndex < startIndex) {
+            throw new IllegalArgumentException("End index " + endIndex
+                    + " must be greater or equal than start index " + startIndex);
+        }
     }
 
     private void requirePositiveOrZero(int startIndex) {
