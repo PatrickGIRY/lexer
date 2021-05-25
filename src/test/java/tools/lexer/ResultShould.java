@@ -50,7 +50,7 @@ class ResultShould {
     void map_the_result_value() {
         final var integerResult = new Result<>(123, START_INDEX, END_INDEX);
 
-        final var result = integerResult.map((Function<Object, String>) Object::toString);
+        final Result<Object> result = integerResult.map((Function<Object, String>) Object::toString);
 
         assertAll(
                 () -> assertThat(result.value()).isEqualTo("123"),
