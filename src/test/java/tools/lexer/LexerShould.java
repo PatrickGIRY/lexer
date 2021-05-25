@@ -31,7 +31,7 @@ public class LexerShould {
 
     @Test
     void creaee_a_lexer_with_the_given_result() {
-        final var givenResult = new Result<Object>();
+        final var givenResult = new Result<>();
         final var lexer = Lexer.of(givenResult);
 
         final var result = lexer.tryParse("foo");
