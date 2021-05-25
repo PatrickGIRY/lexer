@@ -13,7 +13,7 @@ class ResultShould {
 
     @Test
     void be_created_with_a_value_the_start_index_and_the_end_index_that_matches() {
-        final var result = new Result<String>(VALUE, START_INDEX, END_INDEX);
+        final var result = new Result<>(VALUE, START_INDEX, END_INDEX);
 
         assertAll(
                 () -> assertThat(result.value()).isEqualTo(VALUE),
