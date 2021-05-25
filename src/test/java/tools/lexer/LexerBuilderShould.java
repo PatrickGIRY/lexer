@@ -59,13 +59,17 @@ public class LexerBuilderShould {
 
     @Test
     void only_add_a_rule_with_a_non_null_one_group_pattern() {
-        assertThatThrownBy(() -> new Rule<>(NULL_ONE_GROUP_PATTERN, __ -> Lexer.empty()))
+        final var lexerBuilder = new LexerBuilder<>();
+
+        assertThatThrownBy(() -> lexerBuilder.add(NULL_ONE_GROUP_PATTERN, __ -> Lexer.empty()))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @Test
     void only_add_a_rule_with_a_non_null_flat_mapper() {
-        assertThatThrownBy(() -> new Rule<>(ONE_GROUP_PATTERN, NULL_FLAT_MAPPER))
+        final var lexerBuilder = new LexerBuilder<>();
+
+        assertThatThrownBy(() -> lexerBuilder.add(ONE_GROUP_PATTERN, NULL_FLAT_MAPPER))
                 .isInstanceOf(NullPointerException.class);
     }
 }
