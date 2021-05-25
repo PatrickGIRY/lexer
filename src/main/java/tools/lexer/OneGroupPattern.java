@@ -16,4 +16,8 @@ public record OneGroupPattern(Pattern pattern) {
             throw new IllegalArgumentException(pattern + " has not one captured group");
         }
     }
+
+    public String regex() {
+        return pattern.pattern();
+    }
 }

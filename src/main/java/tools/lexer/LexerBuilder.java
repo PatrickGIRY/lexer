@@ -10,7 +10,7 @@ public class LexerBuilder<T> {
     private final List<Function<Result<String>, Lexer<T>>> flatMappers = new ArrayList<>();
 
     public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> fletMapper) {
-        regexes = oneGroupPattern.pattern().pattern();
+        regexes = oneGroupPattern.regex();
         this.flatMappers.add(fletMapper);
         return this;
     }
