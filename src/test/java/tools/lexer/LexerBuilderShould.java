@@ -6,10 +6,12 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerBuilderShould {
 
+    private static final OneGroupPattern NULL_ONE_GROUP_PATTERN = null;
     private static final String ONE_GROUP_REGEX = "(.*)";
     private static final OneGroupPattern ONE_GROUP_PATTERN = new OneGroupPattern(Pattern.compile(ONE_GROUP_REGEX));
     private static final Function<Result<String>, Lexer<Object>> FLAT_MAPPER = __ -> Lexer.empty();
@@ -52,5 +54,11 @@ public class LexerBuilderShould {
     void be_typed() {
         final LexerBuilder<String> stringRulesBuilder = new LexerBuilder<>();
         final LexerBuilder<Integer> integerRulesBuilder = new LexerBuilder<>();
+    }
+
+    @Test
+    void only_add_a_rule_with_a_non_null_one_group_pattern() {
+        assertThatThrownBy(() -> new Rule<>(NULL_ONE_GROUP_PATTERN, __ -> Lexer.empty()))
+                .isInstanceOf(NullPointerException.class);
     }
 }
