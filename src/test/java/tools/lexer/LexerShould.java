@@ -31,7 +31,7 @@ public class LexerShould {
     }
 
     @Test
-    void creaee_a_lexer_with_the_given_result() {
+    void create_a_lexer_with_the_given_result() {
         final var givenResult = new Result<>("foo", 2, 10);
         final var lexer = Lexer.of(givenResult);
 
