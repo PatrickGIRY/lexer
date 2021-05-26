@@ -3,8 +3,10 @@ package tools.lexer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerShould {
     @Test
@@ -36,5 +38,22 @@ public class LexerShould {
         final var result = lexer.tryParse("foo");
 
         assertThat(result).hasValue(givenResult);
+    }
+
+    @Test
+    void created_with_a_rule_that_parse_and_transform_the_given_text() {
+        final var lexer =  new LexerBuilder<>()
+                .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), r -> Lexer.of(r.map(Integer::parseInt)))
+                .build();
+
+        final var result = lexer.tryParse("234");
+
+        assertAll(
+                () -> assertThat(result).isNotNull(),
+                () -> assertThat(result.map(Result::value)).hasValue(234),
+                () -> assertThat(result.map(Result::startIndex)).hasValue(0),
+                () -> assertThat(result.map(Result::endIndex)).hasValue(3)
+        );
+
     }
 }
