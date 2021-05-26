@@ -41,22 +41,13 @@ public class LexerBuilder<T> {
                 .filter(Matcher::matches)
                 .flatMap(matcher -> IntStream.range(0, matcher.groupCount())
                         .boxed()
-                        .flatMap(toResult(matcher))
+                        .flatMap(groupIndex -> Stream.ofNullable(matcher.group(groupIndex + 1))
+                                .map(group -> new Result<>(group,
+                                        matcher.start(groupIndex + 1),
+                                        matcher.end(groupIndex + 1)))
+                                .map(result -> flatMappers.get(groupIndex).apply(result)))
                         .findFirst()
                         .flatMap(lexer -> lexer.tryParse(text)));
     }
 
-    private Function<Integer, Stream<Lexer<T>>> toResult(Matcher matcher) {
-        return groupIndex -> Stream.ofNullable(matcher.group(groupIndex + 1))
-                .map(toStringResult(matcher, groupIndex))
-                .map(applyFlatMapper(groupIndex));
-    }
-
-    private Function<String, Result<String>> toStringResult(Matcher matcher, int groupIndex) {
-        return group -> new Result<>(group, matcher.start(groupIndex + 1), matcher.end(groupIndex + 1));
-    }
-
-    private Function<Result<String>, Lexer<T>> applyFlatMapper(int groupIndex) {
-        return result -> flatMappers.get(groupIndex).apply(result);
-    }
 }
