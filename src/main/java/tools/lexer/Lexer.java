@@ -3,12 +3,8 @@ package tools.lexer;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class Lexer<T> {
-    private final Function<String, Optional<Result<T>>> tryParse;
-
-    private Lexer(Function<String, Optional<Result<T>>> tryParse) {
-        this.tryParse = tryParse;
-    }
+public record Lexer<T>(
+        Function<String, Optional<Result<T>>> tryParse) {
 
     public static <T> Lexer<T> empty() {
         return new Lexer<>(__ -> Optional.empty());
