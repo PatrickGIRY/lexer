@@ -1,15 +1,24 @@
 package tools.lexer;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface Lexer<T> {
-    static <T> Lexer<T> empty() {
-        return __ -> Optional.empty();
+public class Lexer<T> {
+    private final Function<String, Optional<Result<T>>> tryParse;
+
+    private Lexer(Function<String, Optional<Result<T>>> tryParse) {
+        this.tryParse = tryParse;
     }
 
-    static <T> Lexer<T> of(Result<T> result) {
-        return __ -> Optional.of(result);
+    public static <T> Lexer<T> empty() {
+        return new Lexer<>(__ -> Optional.empty());
     }
 
-    Optional<Result<T>> tryParse(String text);
+    public static <T> Lexer<T> of(Result<T> result) {
+        return new Lexer<>(__ -> Optional.of(result));
+    }
+
+    public Optional<Result<T>> tryParse(String text) {
+        return tryParse.apply(text);
+    }
 }
