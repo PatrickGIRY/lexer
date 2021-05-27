@@ -21,7 +21,7 @@ public class LexerBuilder<T> {
         requireNonNull(flatMapper);
 
         final var regex = oneGroupPattern.regex();
-        regexes = regexes.isEmpty() ? regex : regexes + " | " + regex;
+        regexes = regexes.isEmpty() ? regex : regexes + "|" + regex;
         this.flatMappers.add(flatMapper);
 
         return this;

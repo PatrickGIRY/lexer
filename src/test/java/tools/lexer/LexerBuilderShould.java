@@ -46,7 +46,7 @@ public class LexerBuilderShould {
 
         assertAll(
                 () -> assertThat(newLexerBuilder2).isNotNull(),
-                () -> assertThat(newLexerBuilder2.regexes()).isEqualTo(firstRegex + " | " + secondRegex),
+                () -> assertThat(newLexerBuilder2.regexes()).isEqualTo(firstRegex + "|" + secondRegex),
                 () -> assertThat(newLexerBuilder2.flatMappers()).contains(flatMapper1, flatMapper2)
         );
     }
