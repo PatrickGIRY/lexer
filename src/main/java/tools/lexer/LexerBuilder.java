@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 public class LexerBuilder<T> {
 
     private String regexes = "";
-    private final List<Function<Result<String>, Lexer<T>>> flatMappers = new ArrayList<>();
+    private final List<Function<Result<String>, ? extends Lexer<? extends T>>> flatMappers = new ArrayList<>();
 
     public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
         requireNonNull(oneGroupPattern);
@@ -31,7 +31,7 @@ public class LexerBuilder<T> {
         return regexes;
     }
 
-    public List<Function<Result<String>, Lexer<T>>> flatMappers() {
+    public List<Function<Result<String>,? extends Lexer<? extends T>>> flatMappers() {
         return flatMappers;
     }
 
@@ -45,9 +45,14 @@ public class LexerBuilder<T> {
                                 .map(group -> new Result<>(group,
                                         matcher.start(groupIndex + 1),
                                         matcher.end(groupIndex + 1)))
-                                .map(result -> flatMappers.get(groupIndex).apply(result)))
+                                .map(applyFlatMapper(groupIndex)))
                         .findFirst()
                         .flatMap(lexer -> lexer.tryParse(text)));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Function<Result<String>, Lexer<T>> applyFlatMapper(Integer groupIndex) {
+        return result -> (Lexer<T>) flatMappers.get(groupIndex).apply(result);
     }
 
 }
