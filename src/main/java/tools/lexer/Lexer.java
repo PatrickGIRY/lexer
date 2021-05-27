@@ -1,6 +1,7 @@
 package tools.lexer;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @FunctionalInterface
 public interface Lexer<T> {
@@ -13,4 +14,8 @@ public interface Lexer<T> {
     }
 
     Optional<Result<T>> tryParse(String text);
+
+    default <R> Lexer<R> map(Function<Result<T>, Result<R>> mapper) {
+        return text -> tryParse(text).map(mapper::apply);
+    }
 }

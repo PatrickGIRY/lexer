@@ -81,4 +81,21 @@ public class LexerShould {
                 () -> assertThat(result2.map(Result::endIndex)).hasValue(7)
         );
     }
+
+    @Test
+    void transform_the_parsing_result() {
+        var lexer =  new LexerBuilder<>()
+                .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), r -> Lexer.of(r.map(Integer::parseInt)))
+                .build();
+        lexer = lexer.map(r -> r.map(x -> Integer.class.cast(x) * 2));
+
+        final var result = lexer.tryParse("234");
+
+        assertAll(
+                () -> assertThat(result).isNotNull(),
+                () -> assertThat(result.map(Result::value)).hasValue(468),
+                () -> assertThat(result.map(Result::startIndex)).hasValue(0),
+                () -> assertThat(result.map(Result::endIndex)).hasValue(3)
+        );
+    }
 }
