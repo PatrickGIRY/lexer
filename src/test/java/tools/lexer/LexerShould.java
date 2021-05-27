@@ -63,13 +63,22 @@ public class LexerShould {
                 .add(new OneGroupPattern(Pattern.compile("([1-9]+\\.[0-9]+)")), r -> Lexer.of(r.map(Double::parseDouble)))
                 .build();
 
-        final var result = lexer.tryParse("234");
+        final var result1 = lexer.tryParse("234");
 
         assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.map(Result::value)).hasValue(234),
-                () -> assertThat(result.map(Result::startIndex)).hasValue(0),
-                () -> assertThat(result.map(Result::endIndex)).hasValue(3)
+                () -> assertThat(result1).isNotNull(),
+                () -> assertThat(result1.map(Result::value)).hasValue(234),
+                () -> assertThat(result1.map(Result::startIndex)).hasValue(0),
+                () -> assertThat(result1.map(Result::endIndex)).hasValue(3)
+        );
+
+        final var result2 = lexer.tryParse("453.023");
+
+        assertAll(
+                () -> assertThat(result2).isNotNull(),
+                () -> assertThat(result2.map(Result::value)).hasValue(453.023),
+                () -> assertThat(result2.map(Result::startIndex)).hasValue(0),
+                () -> assertThat(result2.map(Result::endIndex)).hasValue(7)
         );
     }
 }
