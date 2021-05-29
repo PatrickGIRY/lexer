@@ -3,7 +3,6 @@ package tools.lexer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -33,7 +32,7 @@ public class LexerShould {
     @Test
     void created_with_a_rule_that_parse_and_transform_the_given_text() {
         final var lexer =  new LexerBuilder<>()
-                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
+                .add(OneCaptureGroupPattern.from("([0-9]+)"), Lexer.mapping(Integer::parseInt))
                 .build();
 
         final var result = lexer.tryParse("234");
@@ -49,8 +48,8 @@ public class LexerShould {
     @Test
     void created_with_two_rules_that_parse_and_transform_the_given_text() {
         final var lexer =  new LexerBuilder<>()
-                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
-                .add(new OneCaptureGroupPattern(Pattern.compile("([1-9]+\\.[0-9]+)")), Lexer.mapping(Double::parseDouble))
+                .add(OneCaptureGroupPattern.from("([0-9]+)"), Lexer.mapping(Integer::parseInt))
+                .add(OneCaptureGroupPattern.from("([1-9]+\\.[0-9]+)"), Lexer.mapping(Double::parseDouble))
                 .build();
 
         final var result1 = lexer.tryParse("234");
@@ -75,7 +74,7 @@ public class LexerShould {
     @Test
     void transform_the_parsing_result() {
         var lexer =  new LexerBuilder<Integer>()
-                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
+                .add(OneCaptureGroupPattern.from("([0-9]+)"), Lexer.mapping(Integer::parseInt))
                 .build();
         lexer = lexer.map(x -> x * 2);
 
