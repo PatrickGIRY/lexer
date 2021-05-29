@@ -15,7 +15,7 @@ public class LexerBuilderShould {
     private static final String ONE_GROUP_REGEX = "(.*)";
     private static final OneGroupPattern ONE_GROUP_PATTERN = new OneGroupPattern(Pattern.compile(ONE_GROUP_REGEX));
     private static final Function<Result<String>, Lexer<Object>> FLAT_MAPPER = __ -> Lexer.empty();
-    public static final Function<Result<String>, Lexer<Object>> NULL_FLAT_MAPPER = null;
+    private static final Function<Result<String>, Lexer<Object>> NULL_FLAT_MAPPER = null;
 
     @Test
     void add_one_new_rule() {
