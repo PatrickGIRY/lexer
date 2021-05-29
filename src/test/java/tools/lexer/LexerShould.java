@@ -49,8 +49,8 @@ public class LexerShould {
     @Test
     void created_with_two_rules_that_parse_and_transform_the_given_text() {
         final var lexer =  new LexerBuilder<>()
-                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), r -> __ -> r.map(Integer::parseInt))
-                .add(new OneCaptureGroupPattern(Pattern.compile("([1-9]+\\.[0-9]+)")), r -> __ -> r.map(Double::parseDouble))
+                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
+                .add(new OneCaptureGroupPattern(Pattern.compile("([1-9]+\\.[0-9]+)")), Lexer.mapping(Double::parseDouble))
                 .build();
 
         final var result1 = lexer.tryParse("234");
@@ -75,7 +75,7 @@ public class LexerShould {
     @Test
     void transform_the_parsing_result() {
         var lexer =  new LexerBuilder<Integer>()
-                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), r -> __ -> r.map(Integer::parseInt))
+                .add(new OneCaptureGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
                 .build();
         lexer = lexer.map(x -> x * 2);
 
