@@ -62,6 +62,15 @@ class ResultShould {
     }
 
     @Test
+    void map_to_empty_when_the_mapper_return_null() {
+        final var integerResult = new Result<>(123, START_INDEX, END_INDEX);
+
+        final Optional<Result<Object>> result = integerResult.map(v -> null);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
     void not_map_with_a_null_mapper() {
         final var result = new Result<>(123, START_INDEX, END_INDEX);
 

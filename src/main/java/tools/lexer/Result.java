@@ -27,6 +27,7 @@ public record Result<T>(T value, int startIndex, int endIndex) {
 
     public <R> Optional<Result<R>> map(Function<? super T, ? extends R> mapper) {
         requireNonNull(mapper);
-        return Optional.of(new Result<>(mapper.apply(value()), startIndex(), endIndex()));
+        final R newValue = mapper.apply(value());
+        return newValue != null ? Optional.of(new Result<>(newValue, startIndex(), endIndex())) : Optional.empty();
     }
 }
