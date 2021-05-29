@@ -16,7 +16,8 @@ public class LexerBuilder<T> {
     private String regexes = "";
     private final List<Function<Result<String>, ? extends Lexer<? extends T>>> flatMappers = new ArrayList<>();
 
-    public LexerBuilder<T> add(OneCaptureGroupPattern oneCaptureGroupPattern, Function<Result<String>, ? extends Lexer<? extends T>> flatMapper) {
+    public LexerBuilder<T> add(OneCaptureGroupPattern oneCaptureGroupPattern,
+                               Function<Result<String>, ? extends Lexer<? extends T>> flatMapper) {
         requireNonNull(oneCaptureGroupPattern);
         requireNonNull(flatMapper);
 
@@ -36,23 +37,36 @@ public class LexerBuilder<T> {
     }
 
     public Lexer<T> build() {
-        final var pattern = Pattern.compile(regexes);
-        return text -> Optional.of(pattern.matcher(text))
-                .filter(Matcher::matches)
-                .flatMap(matcher -> IntStream.range(0, matcher.groupCount())
-                        .boxed()
-                        .flatMap(groupIndex -> Stream.ofNullable(matcher.group(groupIndex + 1))
-                                .map(group -> new Result<>(group,
-                                        matcher.start(groupIndex + 1),
-                                        matcher.end(groupIndex + 1)))
-                                .map(applyFlatMapper(groupIndex)))
-                        .findFirst()
-                        .flatMap(lexer -> lexer.tryParse(text)));
+        return new FastLexer<>(Pattern.compile(regexes), List.copyOf(flatMappers));
     }
 
-    @SuppressWarnings("unchecked")
-    private Function<Result<String>, Lexer<T>> applyFlatMapper(Integer groupIndex) {
-        return result -> (Lexer<T>) flatMappers.get(groupIndex).apply(result);
-    }
+    private record FastLexer<T>(Pattern pattern,
+                                List<Function<Result<String>, ? extends Lexer<? extends T>>> flatMappers)
+            implements Lexer<T> {
 
+        @Override
+        public Optional<Result<T>> tryParse(String text) {
+            return Optional.of(pattern.matcher(text))
+                    .filter(Matcher::matches)
+                    .flatMap(matcher -> IntStream.range(0, matcher.groupCount())
+                            .boxed()
+                            .flatMap(groupIndex -> Stream.ofNullable(matcher.group(groupIndex + 1))
+                                    .map(group -> new Result<>(group,
+                                            matcher.start(groupIndex + 1),
+                                            matcher.end(groupIndex + 1)))
+                                    .map(applyFlatMapper(groupIndex)))
+                            .findFirst()
+                            .flatMap(lexer -> lexer.tryParse(text)));
+        }
+
+        @SuppressWarnings("unchecked")
+        private Function<Result<String>, Lexer<T>> applyFlatMapper(Integer groupIndex) {
+            return result -> (Lexer<T>) flatMappers.get(groupIndex).apply(result);
+        }
+
+        @Override
+        public <R> Lexer<R> map(Function<T, R> mapper) {
+            return Lexer.super.map(mapper);
+        }
+    }
 }
