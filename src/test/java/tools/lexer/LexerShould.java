@@ -74,12 +74,11 @@ public class LexerShould {
     }
 
     @Test
-    @Disabled
     void transform_the_parsing_result() {
         var lexer =  new LexerBuilder<Integer>()
                 .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), r -> __ -> r.map(Integer::parseInt))
                 .build();
-//        lexer = lexer.map(r -> r.map(x -> x * 2));
+        lexer = lexer.map(x -> x * 2);
 
         final var result = lexer.tryParse("234");
 

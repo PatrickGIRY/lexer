@@ -11,7 +11,7 @@ public interface Lexer<T> {
 
     Optional<Result<T>> tryParse(String text);
 
-    default <R> Lexer<R> map(Function<Result<T>, Result<R>> mapper) {
-        return text -> tryParse(text).map(mapper::apply);
+    default <R> Lexer<R> map(Function<T, R> mapper) {
+        return text -> tryParse(text).flatMap(r -> r.map(mapper));
     }
 }
