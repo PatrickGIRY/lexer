@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LexerBuilderShould {
 
-    private static final OneGroupPattern NULL_ONE_GROUP_PATTERN = null;
+    private static final OneCaptureGroupPattern NULL_ONE_GROUP_PATTERN = null;
     private static final String ONE_GROUP_REGEX = "(.*)";
-    private static final OneGroupPattern ONE_GROUP_PATTERN = new OneGroupPattern(Pattern.compile(ONE_GROUP_REGEX));
+    private static final OneCaptureGroupPattern ONE_GROUP_PATTERN = new OneCaptureGroupPattern(Pattern.compile(ONE_GROUP_REGEX));
     private static final Function<Result<String>, Lexer<Object>> FLAT_MAPPER = __ -> Lexer.empty();
     private static final Function<Result<String>, Lexer<Object>> NULL_FLAT_MAPPER = null;
 
@@ -37,12 +37,12 @@ public class LexerBuilderShould {
         final var firstRegex = "([1-9]+\\.[0-9]+)";
         final Function<Result<String>, Lexer<Object>> flatMapper1 = r -> __ -> r.map(Double::parseDouble);
         final var newLexerBuilder1 = lexerBuilder
-                .add(new OneGroupPattern(Pattern.compile(firstRegex)), flatMapper1);
+                .add(new OneCaptureGroupPattern(Pattern.compile(firstRegex)), flatMapper1);
 
         final var secondRegex = "([1-9]+)";
         final Function<Result<String>, Lexer<Object>> flatMapper2 = r -> __ -> r.map(Integer::parseInt);
         final var newLexerBuilder2 = newLexerBuilder1
-                .add(new OneGroupPattern(Pattern.compile(secondRegex)), flatMapper2);
+                .add(new OneCaptureGroupPattern(Pattern.compile(secondRegex)), flatMapper2);
 
         assertAll(
                 () -> assertThat(newLexerBuilder2).isNotNull(),

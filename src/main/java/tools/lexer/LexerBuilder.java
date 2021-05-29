@@ -16,11 +16,11 @@ public class LexerBuilder<T> {
     private String regexes = "";
     private final List<Function<Result<String>, ? extends Lexer<? extends T>>> flatMappers = new ArrayList<>();
 
-    public LexerBuilder<T> add(OneGroupPattern oneGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
-        requireNonNull(oneGroupPattern);
+    public LexerBuilder<T> add(OneCaptureGroupPattern oneCaptureGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
+        requireNonNull(oneCaptureGroupPattern);
         requireNonNull(flatMapper);
 
-        final var regex = oneGroupPattern.regex();
+        final var regex = oneCaptureGroupPattern.regex();
         regexes = regexes.isEmpty() ? regex : regexes + "|" + regex;
         this.flatMappers.add(flatMapper);
 

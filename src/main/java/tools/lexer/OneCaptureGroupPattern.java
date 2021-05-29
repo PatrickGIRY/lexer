@@ -4,13 +4,13 @@ import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 
-public record OneGroupPattern(Pattern pattern) {
-    public OneGroupPattern {
+public record OneCaptureGroupPattern(Pattern pattern) {
+    public OneCaptureGroupPattern {
         requireNonNull(pattern);
-        requireOneCapturedGroup(pattern);
+        requireOneCaptureGroup(pattern);
     }
 
-    private static void requireOneCapturedGroup(Pattern pattern) {
+    private static void requireOneCaptureGroup(Pattern pattern) {
         if (pattern.matcher("").groupCount() != 1) {
             throw new IllegalArgumentException(pattern + " has not one captured group");
         }
