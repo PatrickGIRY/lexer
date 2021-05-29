@@ -16,7 +16,7 @@ public class LexerBuilder<T> {
     private String regexes = "";
     private final List<Function<Result<String>, ? extends Lexer<? extends T>>> flatMappers = new ArrayList<>();
 
-    public LexerBuilder<T> add(OneCaptureGroupPattern oneCaptureGroupPattern, Function<Result<String>, Lexer<T>> flatMapper) {
+    public LexerBuilder<T> add(OneCaptureGroupPattern oneCaptureGroupPattern, Function<Result<String>, ? extends Lexer<? extends T>> flatMapper) {
         requireNonNull(oneCaptureGroupPattern);
         requireNonNull(flatMapper);
 

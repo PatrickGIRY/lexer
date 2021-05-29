@@ -35,12 +35,12 @@ public class LexerBuilderShould {
         final var lexerBuilder = new LexerBuilder<>();
 
         final var firstRegex = "([1-9]+\\.[0-9]+)";
-        final Function<Result<String>, Lexer<Object>> flatMapper1 = Lexer.mapping(Double::parseDouble);
+        final Function<Result<String>, Lexer<Double>> flatMapper1 = Lexer.mapping(Double::parseDouble);
         final var newLexerBuilder1 = lexerBuilder
                 .add(OneCaptureGroupPattern.from(firstRegex), flatMapper1);
 
         final var secondRegex = "([1-9]+)";
-        final Function<Result<String>, Lexer<Object>> flatMapper2 = Lexer.mapping(Integer::parseInt);
+        final Function<Result<String>, Lexer<Integer>> flatMapper2 = Lexer.mapping(Integer::parseInt);
         final var newLexerBuilder2 = newLexerBuilder1
                 .add(OneCaptureGroupPattern.from(secondRegex), flatMapper2);
 
