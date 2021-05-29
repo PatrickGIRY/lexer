@@ -9,6 +9,10 @@ public interface Lexer<T> {
         return __ -> Optional.empty();
     }
 
+    static <T>  Function<Result<String>, Lexer<T>> mapping(Function<String, T> mapper) {
+        return result -> __ -> result.map(mapper);
+    }
+
     Optional<Result<T>> tryParse(String text);
 
     default <R> Lexer<R> map(Function<T, R> mapper) {

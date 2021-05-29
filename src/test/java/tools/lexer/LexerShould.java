@@ -34,7 +34,7 @@ public class LexerShould {
     @Test
     void created_with_a_rule_that_parse_and_transform_the_given_text() {
         final var lexer =  new LexerBuilder<>()
-                .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), r -> __ -> r.map(Integer::parseInt))
+                .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), Lexer.mapping(Integer::parseInt))
                 .build();
 
         final var result = lexer.tryParse("234");
