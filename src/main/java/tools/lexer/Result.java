@@ -1,5 +1,6 @@
 package tools.lexer;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
@@ -24,8 +25,8 @@ public record Result<T>(T value, int startIndex, int endIndex) {
         }
     }
 
-    public <R> Result<R> map(Function<? super T, ? extends R> mapper) {
+    public <R> Optional<Result<R>> map(Function<? super T, ? extends R> mapper) {
         requireNonNull(mapper);
-        return new Result<>(mapper.apply(value()), startIndex(), endIndex());
+        return Optional.of(new Result<>(mapper.apply(value()), startIndex(), endIndex()));
     }
 }

@@ -2,6 +2,7 @@ package tools.lexer;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,12 +52,12 @@ class ResultShould {
     void map_the_result_value() {
         final var integerResult = new Result<>(123, START_INDEX, END_INDEX);
 
-        final Result<Object> result = integerResult.map((Function<Object, String>) Object::toString);
+        final Optional<Result<Object>> result = integerResult.map((Function<Object, String>) Object::toString);
 
         assertAll(
-                () -> assertThat(result.value()).isEqualTo("123"),
-                () -> assertThat(result.startIndex()).isEqualTo(START_INDEX),
-                () -> assertThat(result.endIndex()).isEqualTo(END_INDEX)
+                () -> assertThat(result.map(Result::value)).hasValue("123"),
+                () -> assertThat(result.map(Result::startIndex)).hasValue(START_INDEX),
+                () -> assertThat(result.map(Result::endIndex)).hasValue(END_INDEX)
         );
     }
 
