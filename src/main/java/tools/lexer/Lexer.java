@@ -9,10 +9,6 @@ public interface Lexer<T> {
         return __ -> Optional.empty();
     }
 
-    static <T> Lexer<T> of(Result<T> result) {
-        return __ -> Optional.of(result);
-    }
-
     Optional<Result<T>> tryParse(String text);
 
     default <R> Lexer<R> map(Function<Result<T>, Result<R>> mapper) {

@@ -32,16 +32,6 @@ public class LexerShould {
     }
 
     @Test
-    void create_a_lexer_with_the_given_result() {
-        final var givenResult = new Result<>("foo", 2, 10);
-        final var lexer = Lexer.of(givenResult);
-
-        final var result = lexer.tryParse("foo");
-
-        assertThat(result).hasValue(givenResult);
-    }
-
-    @Test
     void created_with_a_rule_that_parse_and_transform_the_given_text() {
         final var lexer =  new LexerBuilder<>()
                 .add(new OneGroupPattern(Pattern.compile("([0-9]+)")), r -> __ -> r.map(Integer::parseInt))
